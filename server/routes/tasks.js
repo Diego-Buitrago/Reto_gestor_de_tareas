@@ -4,14 +4,60 @@ const connection = require('../database/database')
 
 const {ObjectId} = require('mongodb');
 
-router.get('/', async(req,res)=>{
+router.get('/tareas', async(req,res)=>{
      
     const db = await connection();
     await db.collection('tareas').find()
     .toArray(function(err,tareas){
-        res.json(tareas)
+        return res.json(tareas)
     })
 
 });
+
+router.post('/nueva_tarea', async (req,res)=>{
+    const db = await connection();
+    const { nombre, prioridad, vencimiento} = req.body;
+
+    db.collection('tareas').insertOne({
+        nombre,
+        prioridad,
+        vencimiento
+    }, function(
+        err,
+        info
+    ){
+        res.json(info.ops[0]);
+    })
+
+});
+
+router.put('/actualizar_tarea/:id', async (req,res)=>{
+    const db = await connection();
+    const { nombre, prioridad, vencimiento} = req.body;
+    const id = req.params.id;
+
+    db.collection('tareas').findOneAndUpdate(
+        {"_id":ObjectId(id)},
+        {$set:{nombre:nombre, prioridad:prioridad, vencimiento:vencimiento}},
+       // {returnNewDocument: true},
+        function(){
+           res.json('Tarea actualizada');
+        }
+    )
+});
+
+router.delete('/eliminar_tarea/:id', async (req,res)=>{
+
+    const db = await connection();
+    const id = req.params.id;
+
+    db.collection('tareas').deleteOne(
+        {"_id":ObjectId(id)},
+        function(){
+            res.json({message:'Tarea eliminada'});
+        }
+    )
+})
+
 
 module.exports = router;

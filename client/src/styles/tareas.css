@@ -1,5 +1,5 @@
 .container {
-    width: 30%;
+    width: 80%;
     padding: 3%;
     background-color:white;
     border-radius: 7%;
@@ -7,4 +7,22 @@
     margin-right: auto;
     margin-top: 5%;
     margin-bottom: 5%;
+}
+
+.tarea {
+    background-color:#a3e2d0
+}
+
+.editar {
+    border-radius: 10px;
+    height: 30px;
+    margin-left: 10px;
+    margin: 5px;
+}
+
+.eliminar {
+    background-color: red;
+    border-radius: 10px;
+    height: 30px;
+    margin-left: 10px;
 }

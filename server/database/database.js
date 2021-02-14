@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
-const dbName = 'db_tareas';
-const url = 'mongodb+srv://diego:19901989@cluster0.u1ees.mongodb.net/db_tareas?retryWrites=true&w=majority';
+const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.u1ees.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 const client = new MongoClient(url, {
     useUnifiedTopology: true
@@ -9,5 +9,5 @@ const client = new MongoClient(url, {
 
 module.exports = async() => {
     await client.connect();
-    return client.db(dbName);
+    return client.db(process.env.DB_NAME);
 }
