@@ -22,6 +22,20 @@ class Registrase extends Component {
                 })
             })
             alert('Usuario registrado')
+
+            fetch('/api/send_mail', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  to: this.state.correo,
+                  subject: 'Bienvenida al gestor de tareas',
+                  username: this.state.correo,
+                  password: this.state.contrasena
+                }),
+              });
+
         } else {
             alert('Algo salio mal verifica que todos los campos esten llenos')
         }

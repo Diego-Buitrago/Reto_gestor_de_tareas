@@ -12,6 +12,8 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use('/api', require('./send_mail/send_mail'));
+
 app.use('/api', require('./routes/tasks'));
 app.use('/api', require('./routes/user'));
 

@@ -16,6 +16,25 @@ class Tareas extends Component  {
         this.setState({datos: data})
     }
 
+    deleteTask = (id) => {
+        const newTasks = this.state.datos.filter(task => task._id !== id);
+        this.setState({datos: newTasks});
+
+        fetch('/api/eliminar_tarea' , {
+            method: 'DELETE',
+           headers: {
+               'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({
+           id: id
+           })
+       })
+    }
+
+    editarTarea(id) {
+        window.localStorage.setItem('editar_tarea', (id))
+    }
+
    
     render() {
         return (
@@ -30,8 +49,10 @@ class Tareas extends Component  {
                                    Nombre: {dato.nombre} -
                                    Prioridad: {dato.prioridad} -
                                    Vence: {dato.vencimiento}
-                                   <button className="editar">Editar</button>
-                                   <button className="eliminar">x</button>
+                                   <a href="editarTarea">
+                                        <button className="editar" onClick={this.editarTarea.bind(this, dato._id)} >Editar</button>
+                                   </a>
+                                   <button className="eliminar" onClick={this.deleteTask.bind(this, dato._id)}>x</button>
                                </h4>
                                
                            </div>

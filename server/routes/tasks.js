@@ -35,23 +35,22 @@ router.post('/nueva_tarea', async (req,res)=>{
 
 router.put('/actualizar_tarea/:id', async (req,res)=>{
     const db = await connection();
-    const { nombre, prioridad, vencimiento} = req.body;
+    const { id_usuario, nombre, prioridad, vencimiento} = req.body;
     const id = req.params.id;
 
     db.collection('tareas').findOneAndUpdate(
         {"_id":ObjectId(id)},
-        {$set:{nombre:nombre, prioridad:prioridad, vencimiento:vencimiento}},
-       // {returnNewDocument: true},
+        {$set:{id_usuario:id_usuario, nombre:nombre, prioridad:prioridad, vencimiento:vencimiento}},
         function(){
            res.json('Tarea actualizada');
         }
     )
 });
 
-router.delete('/eliminar_tarea/:id', async (req,res)=>{
+router.delete('/eliminar_tarea', async (req,res)=>{
 
     const db = await connection();
-    const id = req.params.id;
+    const { id } = req.body
 
     db.collection('tareas').deleteOne(
         {"_id":ObjectId(id)},

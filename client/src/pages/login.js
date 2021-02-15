@@ -16,7 +16,6 @@ function Login() {
             const res = await fetch(`/api/login/${correo}/${contrasena}`)
             const data = await res.json()
             if (data.length > 0) {
-                console.log(data)
                 window.localStorage.setItem('id_usuario', (data[0]._id))
                 login(); 
             } else {
