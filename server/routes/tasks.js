@@ -4,10 +4,11 @@ const connection = require('../database/database')
 
 const {ObjectId} = require('mongodb');
 
-router.get('/tareas', async(req,res)=>{
+router.get('/tareas/:id_usuario', async(req,res)=>{
      
     const db = await connection();
-    await db.collection('tareas').find()
+    const id_usuario = req.params.id_usuario;
+    await db.collection('tareas').find({id_usuario: id_usuario})
     .toArray(function(err,tareas){
         return res.json(tareas)
     })
@@ -16,9 +17,10 @@ router.get('/tareas', async(req,res)=>{
 
 router.post('/nueva_tarea', async (req,res)=>{
     const db = await connection();
-    const { nombre, prioridad, vencimiento} = req.body;
+    const {id_usuario, nombre, prioridad, vencimiento} = req.body;
 
     db.collection('tareas').insertOne({
+        id_usuario,
         nombre,
         prioridad,
         vencimiento

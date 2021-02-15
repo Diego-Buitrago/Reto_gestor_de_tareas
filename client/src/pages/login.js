@@ -1,27 +1,57 @@
-import React from "react";
+import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import useAuthContext from '../hooks/useContext'
+
 import "../styles/login.css";
 
-import { withRouter } from "react-router-dom";
+function Login() {
 
+    const {login} = useAuthContext();
+    const [correo, setCorreo]  = useState('');
+    const [contrasena, setContrasena] = useState('');
 
-const login = () => {
+    async function save(e){
+        if(correo !== '' && contrasena !== '') {
+            
+            const res = await fetch(`/api/login/${correo}/${contrasena}`)
+            const data = await res.json()
+            if (data.length > 0) {
+                console.log(data)
+                window.localStorage.setItem('id_usuario', (data[0]._id))
+                login(); 
+            } else {
+                alert('Usuario o clave INVALIDA')
+            }
+        } else {
+            alert('Algo salio mal verifica que todos los campos esten llenos')
+        }
+    }
+
+    function onChangeCorreo(e){
+        setCorreo(e.target.value);
+    }
+
+    function onChangeContrasena(e){
+        setContrasena(e.target.value);
+    } 
+
     return (
         <div id="main-container">
-            <form className="form">
-                <label>Correo :</label>
-                <input type="text" placeholder="Juan"/>
-                <br/>
-                <label>Contraseña :</label>
-                <input type="text" placeholder="***********"/>
-                <br/>
-                <input type="submit"/>
-                <br/>
-                <a href="registrar">
-                    <h4>Registrarse</h4>
-                </a>
-            </form>
+                
+            <label htmlFor="correo">Correo :</label>
+            <input value={correo} onChange={onChangeCorreo} type="text" name="correo" id="correo"/>
+            <br/>
+            <label htmlFor="contrasena">Contraseña :</label>
+            <input value={contrasena} onChange={onChangeContrasena} type="password" name="contrasena" id="contrasena" />
+            <br/>
+            <button onClick={save}>Enviar</button>
+            <br/>
+            <a href="registrar">
+                <h4>Registrarse</h4>
+            </a>
         </div>
     );
+    
 };
 
-export default withRouter(login); 
+export default withRouter(Login); 

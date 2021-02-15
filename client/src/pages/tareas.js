@@ -11,7 +11,7 @@ class Tareas extends Component  {
     }
 
     async componentDidMount() {
-        const res = await fetch('/api/tareas')
+        const res = await fetch(`/api/tareas/${localStorage.getItem('id_usuario')}`)
         const data = await res.json()
         this.setState({datos: data})
     }

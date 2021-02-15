@@ -10,7 +10,7 @@ class NuevaTarea extends Component {
     }
 
     save(e){
-        if(this.state.nombre != '' && this.state.prioridad != '0' && this.state.vencimiento != '') {
+        if(this.state.nombre !== '' && this.state.prioridad !== '0' && this.state.vencimiento !== '') {
             
             fetch('/api/nueva_tarea' , {
                  method: 'POST',
@@ -18,6 +18,7 @@ class NuevaTarea extends Component {
                     'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                id_usuario: localStorage.getItem('id_usuario'),
                 nombre: this.state.nombre,
                 prioridad: this.state.prioridad,
                 vencimiento: this.state.vencimiento

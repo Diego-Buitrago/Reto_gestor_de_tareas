@@ -14,14 +14,11 @@ body{
     margin-right: auto;
     margin-top: 5%;
     margin-bottom: 5%;
-}
-
-.form{
     text-align: center;
-    padding: 5px;
 }
 
-.form > input{
+
+#main-container > input{
     border-radius: 7px;
     margin: 5%;
 }
