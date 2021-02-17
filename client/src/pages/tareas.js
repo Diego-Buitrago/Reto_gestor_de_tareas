@@ -14,6 +14,20 @@ class Tareas extends Component  {
         const res = await fetch(`/api/tareas/${localStorage.getItem('id_usuario')}`)
         const data = await res.json()
         this.setState({datos: data})
+
+        const hoy = new Date();
+
+        for (let i = 0; i < data.length; i++) {
+            
+            const fechaTarea = new Date(`${data[i].vencimiento}`);
+            console.log(data[i].vencimiento)
+            let milisegundosTrascurrido = Math.abs(hoy.getTime() - fechaTarea.getTime());
+
+            if (milisegundosTrascurrido <= 172800000) {
+                alert(`Alerta La tarea ${data[i].nombre} esta proxima a vencer fecha de vencimiento: ${data[i].vencimiento}`)
+               }
+
+        }
     }
 
     deleteTask = (id) => {
