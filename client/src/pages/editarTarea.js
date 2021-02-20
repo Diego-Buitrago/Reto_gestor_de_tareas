@@ -6,7 +6,15 @@ class EditarTarea extends Component {
     state = {
         nombre: '',
         prioridad: '',
-        vencimiento: ''
+        vencimiento: '',
+    }
+
+    async componentDidMount() {
+        const res = await fetch(`/api/editar_tarea/${localStorage.getItem('editar_tarea')}`)
+        const data = await res.json()
+        this.setState({nombre: data[0].nombre})
+        this.setState({prioridad: data[0].prioridad})
+        this.setState({vencimiento: data[0].vencimiento})
     }
 
     save(e){
@@ -44,7 +52,7 @@ class EditarTarea extends Component {
                 <input value={this.state.nombre} onChange={this.onChange.bind(this)} type="text" name="nombre" id="nombre" />
                 <br/>
                 <label htmlFor="prioridad">prioridad :</label>
-                <select id="prioridad" name="prioridad" value={this.state.prioridad} onChange={this.onChange.bind(this)}>
+                <select id="prioridad" name="prioridad" onChange={this.onChange.bind(this)}>
                     <option value="0">Seleccione</option>
                     <option value="Inportante">Importante</option>
                     <option value="No inportante">No importante</option>

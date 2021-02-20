@@ -20,7 +20,6 @@ class Tareas extends Component  {
         for (let i = 0; i < data.length; i++) {
             
             const fechaTarea = new Date(`${data[i].vencimiento}`);
-            console.log(data[i].vencimiento)
             let milisegundosTrascurrido = Math.abs(hoy.getTime() - fechaTarea.getTime());
 
             if (milisegundosTrascurrido <= 172800000) {

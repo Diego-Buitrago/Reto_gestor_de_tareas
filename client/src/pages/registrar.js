@@ -12,7 +12,7 @@ class Registrase extends Component {
         if(this.state.correo !== '' && this.state.contrasena !== '') {
             
             fetch('/api/nuevo_usuario' , {
-                 method: 'POST',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
             },

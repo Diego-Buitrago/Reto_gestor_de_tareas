@@ -1,28 +1,27 @@
-import { Component } from 'react';
+//import { Component } from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+const axios = require('axios');
 
-class NuevaTarea extends Component {
+function NuevaTarea() {
 
-    state = {
-        nombre: '',
-        prioridad: '',
-        vencimiento: ''
-    }
+    const [nombre, setNombre]  = useState('');
+    const [prioridad, setPrioridad]  = useState('');
+    const [vencimiento, setvencimiento] = useState('');
+    const [imagen, setImagen] = useState('');
 
-    save(e){
-        if(this.state.nombre !== '' && this.state.prioridad !== '0' && this.state.vencimiento !== '') {
-            
-            fetch('/api/nueva_tarea' , {
-                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id_usuario: localStorage.getItem('id_usuario'),
-                nombre: this.state.nombre,
-                prioridad: this.state.prioridad,
-                vencimiento: this.state.vencimiento
-                })
+    const $form = document.querySelector('#form');
+
+    function save(e){
+
+        if(nombre !== '' && prioridad !== '0' && vencimiento !== '' && imagen !== '') {
+            e.preventDefault();
+
+            const forData = new FormData($form);
+
+            fetch(`/api/nueva_tarea/${localStorage.getItem('id_usuario')}/${nombre}/${prioridad}/${vencimiento}`, {
+                method: 'POST',
+                body: forData
             })
             alert('Se a guardado correctamente')
         } else {
@@ -30,36 +29,48 @@ class NuevaTarea extends Component {
         }
     }
 
-    onChange(e){
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }   
+    function onChangeNombre(e){
+        setNombre(e.target.value);
+    }
 
-    render() {
-        return (
-            <div id="main-container">
+    function onChangePrioridad(e){
+        setPrioridad(e.target.value);
+    }
+
+    function onChangeVencimiento(e){
+        setvencimiento(e.target.value);
+    }
+    
+    function onChangeimagen(e){
+        setImagen(e.target.files);
+    }
+
+    return (
+
+        <div id="main-container">
+            <form id="form">
+                <input type="file" accept=".png, .jpg" name="imagen" id="imagen" onChange={onChangeimagen}/>
                 
                 <label htmlFor="nombre" >Nombre :</label>
-                <input value={this.state.nombre} onChange={this.onChange.bind(this)} type="text" name="nombre" id="nombre" />
+                <input value={nombre} onChange={onChangeNombre} type="text" name="nombre" id="nombre" />
                 <br/>
                 <label htmlFor="prioridad">prioridad :</label>
-                <select id="prioridad" name="prioridad" value={this.state.prioridad} onChange={this.onChange.bind(this)}>
+                <select id="prioridad" name="prioridad" value={prioridad} onChange={onChangePrioridad}>
                     <option value="0">Seleccione</option>
                     <option value="Inportante">Importante</option>
                     <option value="No inportante">No importante</option>
                 </select>
                 <br/>
                 <label htmlFor="vencimiento">Vencimiento :</label>
-                <input type="Date" id="vencimiento" name="vencimiento" value={this.state.vencimiento} onChange={this.onChange.bind(this)} />
+                <input type="Date" id="vencimiento" name="vencimiento" value={vencimiento} onChange={onChangeVencimiento} />
                 <br/>
                 <div>
-                <button onClick={this.save.bind(this)}>Guardar</button>
-                </div>
-                
+                <button onClick={save} >Guardar</button>
             </div>
-        );
-    } 
+            </form>
+        </div>
+    );
+    
 };
 
 export default withRouter(NuevaTarea);
