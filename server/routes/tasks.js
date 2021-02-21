@@ -29,6 +29,7 @@ router.get('/tareas/:id_usuario', async(req,res)=>{
 
 router.get('/editar_tarea/:id_tarea', async(req,res)=>{
      
+    
     const db = await connection();
     const id_tarea = req.params.id_tarea;
 
@@ -65,16 +66,23 @@ router.post('/nueva_tarea/:id_usuario/:nombre/:prioridad/:vencimiento', upload.s
 });
 
 
-router.put('/actualizar_tarea/:id', async (req,res)=>{
+router.put('/actualizar_tarea/:id/:id_usuario/:nombre/:prioridad/:vencimiento', upload.single('imagen'), async (req,res)=>{
+    const result = await cloudinary.v2.uploader.upload(req.file.path);
+
     const db = await connection();
-    const { id_usuario, nombre, prioridad, vencimiento} = req.body;
+    
     const id = req.params.id;
+    const id_usuario = req.params.id_usuario;
+    const nombre = req.params.nombre;
+    const prioridad = req.params.prioridad;
+    const vencimiento = req.params.vencimiento;
 
     db.collection('tareas').findOneAndUpdate(
         {"_id":ObjectId(id)},
-        {$set:{id_usuario:id_usuario, nombre:nombre, prioridad:prioridad, vencimiento:vencimiento}},
-        function(){
-           res.json('Tarea actualizada');
+        {$set:{id_usuario:id_usuario, nombre:nombre, prioridad:prioridad, vencimiento:vencimiento, imagenURL:result.url}},
+        async function(){
+            await fs.unlink(req.file.path);
+            res.json('Tarea actualizada');
         }
     )
 });

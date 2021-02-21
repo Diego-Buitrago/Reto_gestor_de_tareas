@@ -1,7 +1,6 @@
-//import { Component } from 'react';
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-const axios = require('axios');
+
 
 function NuevaTarea() {
 

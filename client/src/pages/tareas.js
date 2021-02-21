@@ -59,6 +59,7 @@ class Tareas extends Component  {
                        this.state.datos.map(dato => 
                            <div className="tarea" key={dato._id}>
                                <h4>
+                                <img src={dato.imagenURL} height="100px" /> - 
                                    Nombre: {dato.nombre} -
                                    Prioridad: {dato.prioridad} -
                                    Vence: {dato.vencimiento}
