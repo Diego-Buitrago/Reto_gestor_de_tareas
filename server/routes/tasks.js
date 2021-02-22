@@ -5,6 +5,8 @@ require('dotenv').config();
 const multer = require('multer');
 const upload = multer({dest: '../public/uploads'})
 const cloudinary = require('cloudinary');
+const jwt = require('jsonwebtoken');
+const verifyToken = require('../middlewares/authjwt');
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -15,12 +17,14 @@ const fs = require('fs-extra');
 
 const {ObjectId} = require('mongodb');
 
-router.get('/tareas/:id_usuario', async(req,res)=>{
+router.get('/tareas/:id_usuario', verifyToken, async(req,res)=>{
      
     const db = await connection();
     const id_usuario = req.params.id_usuario;
 
-    await db.collection('tareas').find({id_usuario: id_usuario})
+    const decoded = jwt.verify(id_usuario, 'id_api')
+
+    await db.collection('tareas').find({id_usuario: decoded.id})
     .toArray(function(err,tareas){
         return res.json(tareas)
     })
@@ -48,9 +52,11 @@ router.post('/nueva_tarea/:id_usuario/:nombre/:prioridad/:vencimiento', upload.s
     const nombre = req.params.nombre;
     const prioridad = req.params.prioridad;
     const vencimiento = req.params.vencimiento;
+
+    const decoded = jwt.verify(id_usuario, 'id_api')
      
     db.collection('tareas').insertOne({
-        id_usuario,
+        id_usuario: decoded.id,
         nombre,
         prioridad,
         vencimiento,
@@ -64,7 +70,6 @@ router.post('/nueva_tarea/:id_usuario/:nombre/:prioridad/:vencimiento', upload.s
     })
 
 });
-
 
 router.put('/actualizar_tarea/:id/:id_usuario/:nombre/:prioridad/:vencimiento', upload.single('imagen'), async (req,res)=>{
     const result = await cloudinary.v2.uploader.upload(req.file.path);

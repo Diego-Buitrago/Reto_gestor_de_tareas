@@ -16,7 +16,7 @@ function Login() {
             const res = await fetch(`/api/login/${correo}/${contrasena}`)
             const data = await res.json()
             if (data.length > 0) {
-                window.localStorage.setItem('id_usuario', (data[0]._id))
+                window.localStorage.setItem('id_usuario', data)
                 login(); 
             } else {
                 alert('Usuario o clave INVALIDA')
