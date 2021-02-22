@@ -1,0 +1,13 @@
+.sidebar{
+    position: absolute;
+    width: 10%;
+    height: 100%;
+}
+
+
+.actived{
+    background-color: white !important;
+    color: black !important;
+    border-color: #2C1C4C !important;
+}
+

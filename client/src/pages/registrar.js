@@ -50,6 +50,7 @@ class Registrase extends Component {
     render() {
         return (
             <div id="main-container">
+                <h2>Crea un usuario</h2>
                 <form className="form">
                     <label htmlFor="correo">Correo :</label>
                     <input value={this.state.correo} onChange={this.onChange.bind(this)} type="text" name="correo" id="correo"/>
@@ -59,6 +60,9 @@ class Registrase extends Component {
                     <br/>
                     <button onClick={this.save.bind(this)}>Guardar</button>
                 </form>
+                <a href="/">
+                    <h4>Login</h4>
+                </a>
             </div>
         );
     }

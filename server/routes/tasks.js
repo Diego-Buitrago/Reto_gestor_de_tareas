@@ -1,9 +1,9 @@
 const { Router} = require('express');
 const router = Router();
-const connection = require('../database/database')
+const connection = require('../database/database');
 require('dotenv').config();
 const multer = require('multer');
-const upload = multer({dest: '../public/uploads'})
+const upload = multer({dest: '../public/uploads'});
 const cloudinary = require('cloudinary');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../middlewares/authjwt');
@@ -46,7 +46,7 @@ router.get('/editar_tarea/:id_tarea', async(req,res)=>{
 
 router.post('/nueva_tarea/:id_usuario/:nombre/:prioridad/:vencimiento', upload.single('imagen'), async(req,res) => {
     const result = await cloudinary.v2.uploader.upload(req.file.path);
-    
+
     const db = await connection();
     const id_usuario = req.params.id_usuario;
     const nombre = req.params.nombre;
@@ -71,7 +71,7 @@ router.post('/nueva_tarea/:id_usuario/:nombre/:prioridad/:vencimiento', upload.s
 
 });
 
-router.put('/actualizar_tarea/:id/:id_usuario/:nombre/:prioridad/:vencimiento', upload.single('imagen'), async (req,res)=>{
+router.put('/actualizar_tarea/:id/:id_usuario/:nombre/:prioridad/:vencimiento',  upload.single('imagen'), async (req,res)=>{
     const result = await cloudinary.v2.uploader.upload(req.file.path);
 
     const db = await connection();
@@ -82,9 +82,11 @@ router.put('/actualizar_tarea/:id/:id_usuario/:nombre/:prioridad/:vencimiento', 
     const prioridad = req.params.prioridad;
     const vencimiento = req.params.vencimiento;
 
+    const decoded = jwt.verify(id_usuario, 'id_api')
+
     db.collection('tareas').findOneAndUpdate(
         {"_id":ObjectId(id)},
-        {$set:{id_usuario:id_usuario, nombre:nombre, prioridad:prioridad, vencimiento:vencimiento, imagenURL:result.url}},
+        {$set:{id_usuario:decoded.id, nombre:nombre, prioridad:prioridad, vencimiento:vencimiento, imagenURL:result.url}},
         async function(){
             await fs.unlink(req.file.path);
             res.json('Tarea actualizada');

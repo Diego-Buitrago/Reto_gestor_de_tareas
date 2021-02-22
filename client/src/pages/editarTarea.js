@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import Sidebar from '../components/sidebar';
 
 class EditarTarea extends Component {
 
@@ -28,6 +29,7 @@ class EditarTarea extends Component {
             const forData = new FormData($form);
             
             fetch(`/api/actualizar_tarea/${localStorage.getItem('editar_tarea')}/${localStorage.getItem('id_usuario')}/${this.state.nombre}/${this.state.prioridad}/${this.state.vencimiento}` , {
+                headers: {'x-access-token': localStorage.getItem('id_usuario')},
                 method: 'PUT',
                 body: forData
             })
@@ -46,28 +48,30 @@ class EditarTarea extends Component {
 
     render() {
         return (
-            <div id="main-container">
-                <form id="form">
-                    <input type="file" accept=".png, .jpg" name="imagen" id="imagen" />
+            <div>
+                <Sidebar />
+                <div id="main-container">
+                    <form id="form">
+                        <input type="file" accept=".png, .jpg" name="imagen" id="imagen" />
                 
-                    <label htmlFor="nombre" >Nombre :</label>
-                    <input value={this.state.nombre} onChange={this.onChange.bind(this)} type="text" name="nombre" id="nombre" />
-                    <br/>
-                    <label htmlFor="prioridad">prioridad :</label>
-                    <select id="prioridad" name="prioridad" onChange={this.onChange.bind(this)}>
-                        <option value="0">Seleccione</option>
-                        <option value="Inportante">Importante</option>
-                        <option value="No inportante">No importante</option>
-                    </select>
-                    <br/>
-                    <label htmlFor="vencimiento">Vencimiento :</label>
-                    <input type="Date" id="vencimiento" name="vencimiento" value={this.state.vencimiento} onChange={this.onChange.bind(this)} />
-                    <br/>
-                    <div>
-                    <button onClick={this.save.bind(this)}>Actualizar</button>
-                    </div>
-                </form>
-                
+                        <label htmlFor="nombre" >Nombre :</label>
+                        <input value={this.state.nombre} onChange={this.onChange.bind(this)} type="text" name="nombre" id="nombre" />
+                        <br/>
+                        <label htmlFor="prioridad">prioridad :</label>
+                        <select id="prioridad" name="prioridad" onChange={this.onChange.bind(this)}>
+                            <option value="0">Seleccione</option>
+                            <option value="Inportante">Importante</option>
+                            <option value="No inportante">No importante</option>
+                        </select>
+                        <br/>
+                        <label htmlFor="vencimiento">Vencimiento :</label>
+                        <input type="Date" id="vencimiento" name="vencimiento" value={this.state.vencimiento} onChange={this.onChange.bind(this)} />
+                        <br/>
+                        <div>
+                        <button onClick={this.save.bind(this)}>Actualizar</button>
+                        </div>
+                        </form>
+                </div>
             </div>
         );
     } 

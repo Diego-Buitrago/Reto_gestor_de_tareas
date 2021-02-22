@@ -12,10 +12,18 @@ export default function  AuthProvider({children}) {
         setIsAutenticated(true);
     }, []);
 
+    const logout = useCallback(() => {
+        window.localStorage.removeItem(mi_autentificacion, true)
+        window.localStorage.removeItem('id_usuario', true)
+        window.localStorage.removeItem('editar_tarea', true)
+        setIsAutenticated(false);
+    }, []);
+
     const value = useMemo(() => ({
         login,
+        logout,
         isAutenticated
-    }), [isAutenticated, login]);
+    }), [isAutenticated, login, logout]);
     
 
     return (

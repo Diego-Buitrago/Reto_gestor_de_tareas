@@ -36,7 +36,7 @@ function Login() {
 
     return (
         <div id="main-container">
-                
+            <h2>Login</h2>
             <label htmlFor="correo">Correo :</label>
             <input value={correo} onChange={onChangeCorreo} type="text" name="correo" id="correo"/>
             <br/>

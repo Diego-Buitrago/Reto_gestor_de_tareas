@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import "../styles/tareas.css";
+import Sidebar from '../components/sidebar';
 
 import { withRouter } from "react-router-dom";
 
@@ -53,10 +54,9 @@ class Tareas extends Component  {
    
     render() {
         return (
-            <div className="container">
-               <a href="nuevaTarea">
-                   <h4>Nueva tarea</h4>
-               </a> 
+            <div>
+                <Sidebar />
+                <div className="container"> 
                    {
                        this.state.datos.map(dato => 
                            <div className="tarea" key={dato._id}>
@@ -74,6 +74,7 @@ class Tareas extends Component  {
                            </div>
                        )
                    }  
+                </div>
            </div>
         );
     }

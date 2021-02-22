@@ -27,3 +27,11 @@ body{
     border-radius: 7px;
     margin: 5%;
 }
+
+#main-container > form > button{
+    margin-bottom: 5%;
+}
+
+#main-container > button{
+    margin-bottom: 5%;;
+}
