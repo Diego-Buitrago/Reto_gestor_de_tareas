@@ -8,6 +8,7 @@ class Registrase extends Component {
         contrasena: ''
     }
 
+
     save(e){
         if(this.state.correo !== '' && this.state.contrasena !== '') {
             
